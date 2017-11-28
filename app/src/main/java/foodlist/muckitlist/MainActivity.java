@@ -1,10 +1,10 @@
 package foodlist.muckitlist;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager manager = getFragmentManager();
+        manager.beginTransaction().add(R.id.content_main, new MapFragment()).commit();
+   //     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+    //    startActivity(intent);
     }
 
     @Override
@@ -80,18 +87,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        FragmentManager manager = getFragmentManager();
+
+        if (id == R.id.nav_map) {
+            manager.beginTransaction().replace(R.id.content_main, new MapFragment()).commit();
+            Toast.makeText(this, "map", Toast.LENGTH_SHORT).show();
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_menu) {
+            manager.beginTransaction().replace(R.id.content_main, new MenuFragment()).commit();
+            Toast.makeText(getApplicationContext(), "menu", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_friend) {
+            manager.beginTransaction().replace(R.id.content_main, new FriendFragment()).commit();
+            Toast.makeText(getApplicationContext(), "friend", Toast.LENGTH_LONG).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
