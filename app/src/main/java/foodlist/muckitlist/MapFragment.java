@@ -31,7 +31,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.content_main, container, false);
+        View layout = inflater.inflate(R.layout.content_nav, container, false);
 
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);

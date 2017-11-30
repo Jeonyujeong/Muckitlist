@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "469552521571",
+    "firebase_url": "https://muckitlist-1511025456131.firebaseio.com",
+    "project_id": "muckitlist-1511025456131",
+    "storage_bucket": "muckitlist-1511025456131.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469552521571:android:eaa8cd57a682b6ee",
+        "android_client_info": {
+          "package_name": "foodlist.muckitlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469552521571-jjnt84thgbe03j5j82163jnuh6kervv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "foodlist.muckitlist",
+            "certificate_hash": "ffff0346c3931a3affdfd3688696372c2194e6cd"
+          }
+        },
+        {
+          "client_id": "469552521571-lp976n7n43p8muervlgamo8ch74o5unp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhGN0MMsaBzpHeAMpqDRL-L6XotuEiU0Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469552521571-lp976n7n43p8muervlgamo8ch74o5unp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -17,6 +17,13 @@
             android:icon="@drawable/ic_menu_friend"
             android:title="친구목록" />
     </group>
-
+    <item android:title="Preforences">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Logout" />
+        </menu>
+    </item>
 
 </menu>
