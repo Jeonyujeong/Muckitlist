@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import foodlist.muckitlist.Fragment.FriendFragment;
 import foodlist.muckitlist.Fragment.MapFragment;
 import foodlist.muckitlist.Fragment.MenuFragment;
 import foodlist.muckitlist.R;
+import foodlist.muckitlist.SearchActivity;
 
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +32,7 @@ public class NavActivity extends AppCompatActivity
     private TextView nameTextView;
     private TextView emailTextView;
     private FirebaseAuth auth;
+    private EditText searchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,10 @@ public class NavActivity extends AppCompatActivity
         nameTextView.setText(auth.getCurrentUser().getDisplayName());
         emailTextView.setText(auth.getCurrentUser().getEmail());
 
-
-
         FragmentManager manager = getFragmentManager();
         manager.beginTransaction().add(R.id.content_nav, new MapFragment()).commit();
+
+        searchEditText= (EditText) findViewById(R.id.search_text);
     }
 
 
@@ -97,11 +100,19 @@ public class NavActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
+        if (id == R.id.search) {
+            String search = searchEditText.getText().toString();
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("search", search);
+            startActivity(intent);
+        }
+
+
 /**
         if (id == R.id.action_settings) {
             Toast.makeText(this, "setting", Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(this, PlaceActivity.class);
             startActivity(intent);
             return true;
         }
