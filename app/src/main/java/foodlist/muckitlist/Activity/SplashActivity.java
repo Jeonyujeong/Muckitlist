@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,5 +22,6 @@ public class SplashActivity extends Activity {
             e.printStackTrace();
         }
         startActivity(new Intent(this,MainActivity.class));
+        finish();
     }
 }

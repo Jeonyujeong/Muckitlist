@@ -1,8 +1,10 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import foodlist.muckitlist.R;
 
 public class MainActivity extends AppCompatActivity {
 

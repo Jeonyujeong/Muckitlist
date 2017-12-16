@@ -49,6 +49,7 @@
                     android:textSize="20dp" />
 
                 <ImageButton
+                    android:id="@+id/mail"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -57,6 +58,7 @@
                     app:srcCompat="@drawable/ic_mail" />
 
                 <ImageButton
+                    android:id="@+id/setting"
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"

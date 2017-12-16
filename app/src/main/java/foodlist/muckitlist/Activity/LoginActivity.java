@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import foodlist.muckitlist.R;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 

@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -18,6 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import foodlist.muckitlist.Fragment.FriendFragment;
+import foodlist.muckitlist.Fragment.MapFragment;
+import foodlist.muckitlist.Fragment.MenuFragment;
+import foodlist.muckitlist.R;
 
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,8 +48,6 @@ public class NavActivity extends AppCompatActivity
             }
         });
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -64,7 +67,7 @@ public class NavActivity extends AppCompatActivity
 
 
         FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().add(R.id.content_main, new MapFragment()).commit();
+        manager.beginTransaction().add(R.id.content_nav, new MapFragment()).commit();
     }
 
 
@@ -82,7 +85,7 @@ public class NavActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.nav, menu);
         return true;
     }
 
@@ -94,10 +97,15 @@ public class NavActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+/**
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "setting", Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(this, PlaceActivity.class);
+            startActivity(intent);
             return true;
         }
-
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -110,14 +118,14 @@ public class NavActivity extends AppCompatActivity
         FragmentManager manager = getFragmentManager();
 
         if (id == R.id.nav_map) {
-            manager.beginTransaction().replace(R.id.content_main, new MapFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new MapFragment()).commit();
             Toast.makeText(this, "map", Toast.LENGTH_SHORT).show();
             // Handle the camera action
         } else if (id == R.id.nav_menu) {
-            manager.beginTransaction().replace(R.id.content_main, new MenuFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new MenuFragment()).commit();
             Toast.makeText(getApplicationContext(), "menu", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_friend) {
-            manager.beginTransaction().replace(R.id.content_main, new FriendFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new FriendFragment()).commit();
             Toast.makeText(getApplicationContext(), "friend", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_logout) {
             auth.signOut();
