@@ -87,8 +87,6 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
         startLocationService();
 
-
-
         return layout;
     }
 
@@ -118,7 +116,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
         }
     }
 
-    private void startLocationService() {
+    public void startLocationService() {
         Log.d(TAG, "startLocationService");
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 

@@ -39,8 +39,16 @@ public class SearchActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("googlemap", "onItemClick");
                 FoodItem item = (FoodItem) adapter.getItem(i);
-                Toast.makeText(SearchActivity.this,item.getMapx()+", "+item.getMapy(), Toast.LENGTH_LONG).show();
+                GeoPoint oKA = new GeoPoint(item.getMapx(), item.getMapy());
+                GeoPoint oGeo = GeoTrans.convert(GeoTrans.KATEC, GeoTrans.GEO, oKA);
+                Double lat = oGeo.getY() ;
+                Double lng = oGeo.getX() ;
+                //GeoPoint oLatLng = new GeoPoint(lat.intValue(), lng.intValue());
+                Toast.makeText(SearchActivity.this,lat+", "+lng, Toast.LENGTH_SHORT).show();
+
+
             }
         });
     }
