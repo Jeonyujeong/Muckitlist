@@ -1,5 +1,6 @@
 package foodlist.muckitlist.Activity;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,8 +68,9 @@ public class NavActivity extends AppCompatActivity
         nameTextView.setText(auth.getCurrentUser().getDisplayName());
         emailTextView.setText(auth.getCurrentUser().getEmail());
 
+        Fragment mapFragment = new MapFragment();
         FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().add(R.id.content_nav, new MapFragment()).commit();
+        manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
 
         searchEditText= (EditText) findViewById(R.id.search_text);
     }

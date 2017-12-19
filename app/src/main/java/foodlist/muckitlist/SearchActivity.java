@@ -96,6 +96,8 @@ public class SearchActivity extends AppCompatActivity {
                     JSONObject c = items.getJSONObject(i);
 
                     String title = c.getString("title");
+                    title = title.replace("<b>", " ");
+                    title = title.replace("</b>", " ");
                     String address = c.getString("address");
                     Integer mapx = c.getInt("mapx");
                     Integer mapy = c.getInt("mapy");
