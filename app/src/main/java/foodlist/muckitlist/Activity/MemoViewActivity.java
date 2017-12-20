@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+
+import foodlist.muckitlist.Memo;
+import foodlist.muckitlist.R;
 
 /**
  * Created by daeyo on 2017-12-21.

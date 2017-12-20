@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import foodlist.muckitlist.Activity.MemoActivity;
+import foodlist.muckitlist.Memo;
 import foodlist.muckitlist.R;
 
 /**

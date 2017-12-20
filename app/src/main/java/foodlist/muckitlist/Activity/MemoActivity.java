@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
+
+import foodlist.muckitlist.Memo;
+import foodlist.muckitlist.R;
 
 /**
  * Created by daeyo on 2017-12-01.

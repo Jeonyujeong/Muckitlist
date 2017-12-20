@@ -35,9 +35,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -51,7 +48,7 @@ import foodlist.muckitlist.R;
 /**
  * Created by yujeong on 27/11/17.
  */
-public class MapFragment extends android.app.Fragment implements OnMapReadyCallback, PlaceSelectionListener {
+public class MapFragment extends android.app.Fragment implements OnMapReadyCallback {
 
     private static final String TAG = " googlmap";
     private MapView mapView = null;
@@ -85,7 +82,6 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
         mapView.getMapAsync(this);
 
 
-
         startLocationService();
 
         return layout;
@@ -109,7 +105,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
         switch (requestCode) {
             case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
-                if(grantResults.length > 0
+                if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationService();
                 }
@@ -119,12 +115,12 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
     public void startLocationService() {
         Log.d(TAG, "startLocationService");
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         long minTime = 10000;
         float minDistance = 1;
 
-        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -166,7 +162,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
             return;
         }
         locationManager.removeUpdates(mLocationListener);
-        Toast.makeText(getActivity(), "LocationListener: "+ latitude+", "+longitude, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "LocationListener: " + latitude + ", " + longitude, Toast.LENGTH_LONG).show();
 
         mapView.getMapAsync(this);
     }
@@ -180,16 +176,16 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
             longitude = location.getLongitude();
 
             Bundle bundle = getArguments();
-            if(bundle != null) {
+            if (bundle != null) {
 
                 Double lat = bundle.getDouble("lat");
                 //getArguments().getDouble("lat");
                 Double lng = bundle.getDouble("lng");
                 LatLng title = new LatLng(lat, lng);
-                Toast.makeText(getActivity(), title.latitude+", "+ title.longitude, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), title.latitude + ", " + title.longitude, Toast.LENGTH_SHORT).show();
             }
 
-                stopLocationService();
+            stopLocationService();
 
         }
 
@@ -209,7 +205,6 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
         }
     };
-
 
 
     @Override
@@ -242,7 +237,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             latitude = bundle.getDouble("lat");
             //getArguments().getDouble("lat");
             longitude = bundle.getDouble("lng");
@@ -287,13 +282,4 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
     }
 
 
-    @Override
-    public void onPlaceSelected(Place place) {
-
-    }
-
-    @Override
-    public void onError(Status status) {
-
-    }
 }

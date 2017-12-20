@@ -28,7 +28,7 @@
             android:hint="주소를 입력해주세요."
             android:inputType="textMultiLine" />
         <EditText
-            android:id="@+id/Edtxt_memo2"
+            android:id="@+id/Edtxt_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
