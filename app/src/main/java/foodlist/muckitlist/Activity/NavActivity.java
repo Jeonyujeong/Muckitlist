@@ -34,6 +34,8 @@ public class NavActivity extends AppCompatActivity
     private TextView emailTextView;
     private FirebaseAuth auth;
     private EditText searchEditText;
+    Fragment mapFragment ;
+    FragmentManager manager = getFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,7 @@ public class NavActivity extends AppCompatActivity
         nameTextView.setText(auth.getCurrentUser().getDisplayName());
         emailTextView.setText(auth.getCurrentUser().getEmail());
 
-        Fragment mapFragment = new MapFragment();
-        FragmentManager manager = getFragmentManager();
+        mapFragment = new MapFragment();
         manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
 
         searchEditText= (EditText) findViewById(R.id.search_text);
@@ -152,4 +153,21 @@ public class NavActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Double title_lat = intent.getDoubleExtra("lat", -1);
+        Double title_lng = intent.getDoubleExtra("lng", -1);
+
+        Toast.makeText(this, title_lat+", "+ title_lng, Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = new Bundle();
+        bundle.putDouble("lat", title_lat);
+        bundle.putDouble("lng", title_lng);
+        mapFragment = new MapFragment();
+        mapFragment.setArguments(bundle);
+
+        manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
+
+    }
 }

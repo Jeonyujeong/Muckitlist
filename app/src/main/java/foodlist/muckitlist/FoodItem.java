@@ -8,10 +8,10 @@ class FoodItem {
 
     private String name;
     private String address;
-    private Integer mapx;
-    private Integer mapy;
+    private Double mapx;
+    private Double mapy;
 
-    FoodItem(String name, String address, Integer mapx, Integer mapy) {
+    FoodItem(String name, String address, Double mapx, Double mapy) {
         this.name = name;
         this.address = address;
         this.mapx = mapx;
@@ -26,7 +26,7 @@ class FoodItem {
 
     void setAddress(String address) {this.address = address; }
 
-    Integer getMapx() { return mapx; }
+    Double getMapx() { return mapx; }
 
-    Integer getMapy() { return mapy; }
+    Double getMapy() { return mapy; }
 }

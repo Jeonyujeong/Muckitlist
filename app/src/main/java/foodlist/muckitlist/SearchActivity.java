@@ -1,6 +1,7 @@
 package foodlist.muckitlist;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import foodlist.muckitlist.Activity.NavActivity;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -45,10 +48,18 @@ public class SearchActivity extends AppCompatActivity {
                 GeoPoint oGeo = GeoTrans.convert(GeoTrans.KATEC, GeoTrans.GEO, oKA);
                 Double lat = oGeo.getY() ;
                 Double lng = oGeo.getX() ;
-                //GeoPoint oLatLng = new GeoPoint(lat.intValue(), lng.intValue());
-                Toast.makeText(SearchActivity.this,lat+", "+lng, Toast.LENGTH_SHORT).show();
+                GeoPoint oLatLng = new GeoPoint(lat.doubleValue(), lng.doubleValue());
+           //   Toast.makeText(SearchActivity.this,lat+", "+lng, Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(SearchActivity.this, oLatLng.x+"", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SearchActivity.this, NavActivity.class);
+                intent.putExtra("lat", oLatLng.getX());
+                intent.putExtra("lng", oLatLng.getY());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
 
 
+
+                finish();
             }
         });
     }
@@ -56,7 +67,7 @@ public class SearchActivity extends AppCompatActivity {
     public String searchTitle(){
         Log.d("json", "searchTitle");
         String str = getIntent().getStringExtra("search");
-        Toast.makeText(SearchActivity.this, str, Toast.LENGTH_LONG).show();
+        Toast.makeText(SearchActivity.this, str, Toast.LENGTH_SHORT).show();
         return str;
     }
 
@@ -99,8 +110,8 @@ public class SearchActivity extends AppCompatActivity {
                     title = title.replace("<b>", " ");
                     title = title.replace("</b>", " ");
                     String address = c.getString("address");
-                    Integer mapx = c.getInt("mapx");
-                    Integer mapy = c.getInt("mapy");
+                    Double mapx = c.getDouble("mapx");
+                    Double mapy = c.getDouble("mapy");
 
                     FoodItem foodItem = new FoodItem(title, address, mapx, mapy);
                     itemList.add(foodItem);

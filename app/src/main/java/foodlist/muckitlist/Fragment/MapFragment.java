@@ -85,6 +85,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
         mapView.getMapAsync(this);
 
 
+
         startLocationService();
 
         return layout;
@@ -178,12 +179,23 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
             latitude = location.getLatitude();
             longitude = location.getLongitude();
 
-            stopLocationService();
+            Bundle bundle = getArguments();
+            if(bundle != null) {
+
+                Double lat = bundle.getDouble("lat");
+                //getArguments().getDouble("lat");
+                Double lng = bundle.getDouble("lng");
+                LatLng title = new LatLng(lat, lng);
+                Toast.makeText(getActivity(), title.latitude+", "+ title.longitude, Toast.LENGTH_SHORT).show();
+            }
+
+                stopLocationService();
 
         }
 
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
+
 
         }
 
@@ -198,34 +210,53 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
         }
     };
 
+
+
     @Override
     public void onStart() {
         super.onStart();
         mapView.onStart();
+        Log.d(TAG, "onStart");
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mapView.onStop();
+        Log.d(TAG, "onStop");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState");
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        Log.d(TAG, "onResume");
+
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            latitude = bundle.getDouble("lat");
+            //getArguments().getDouble("lat");
+            longitude = bundle.getDouble("lng");
+            Log.d(TAG, latitude + "" + longitude);
+            Toast.makeText(this.getActivity(), "bundle", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        Log.d(TAG, "onPause");
     }
 
     @Override
@@ -238,6 +269,7 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
     public void onDestroy() {
         super.onDestroy();
         mapView.onLowMemory();
+        Log.d(TAG, "onDestroy");
     }
 
 

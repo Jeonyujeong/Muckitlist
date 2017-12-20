@@ -5,19 +5,26 @@ package foodlist.muckitlist; /**
 /**
  * @author aquilegia
  *
+ *//**
+ *
+ */
+
+/**
+ * @author aquilegia
+ *
  */
 public class GeoPoint {
 	double x;
 	double y;
 	double z;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public GeoPoint() {
 		super();
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
@@ -28,7 +35,7 @@ public class GeoPoint {
 		this.y = y;
 		this.z = 0;
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
@@ -40,7 +47,7 @@ public class GeoPoint {
 		this.y = y;
 		this.z = z;
 	}
-	
+
 	public double getX() {
 		return x;
 	}
@@ -48,7 +55,7 @@ public class GeoPoint {
 	public double getY() {
 		return y;
 	}
-	
+
 	public double getZ() {
 		return z;
 	}
