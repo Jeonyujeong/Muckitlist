@@ -1,39 +1,84 @@
 package foodlist.muckitlist;
 
-import java.util.Date;
-
 /**
  * Created by daeyo on 2017-12-08.
  *
  * Memo 데이터베이스
  */
 
+
 public class Memo {
-    private String txt;
-    private Date createDate, updateDate;
+
+    private String key;
+    private String txt, title, address;
+    private long createDate, updateDate;
+    private int star;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public void setTxt(String txt) {
         this.txt = txt;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setCreateDate(long createDate) {
         this.createDate = createDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(long updateDate) {
         this.updateDate = updateDate;
     }
 
-    public String getTxt() {
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
+    public void setStar(int star) {
+        this.star = star;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public String getTxt() {
         return txt;
     }
 
-    public Date getCreateDate() {
+    public String getKey() {
+        return key;
+    }
+
+    public long getCreateDate() {
         return createDate;
     }
 
-    public Date getUpdateDate() {
+    public long getUpdateDate() {
         return updateDate;
     }
+
+    //캡슐화
+
+
+
+    public String getTitle(){
+        if (txt != null){
+            if( txt.indexOf("\n") > -1){
+                return txt.substring(0, txt.indexOf("\n"));
+            } else {
+                return txt;
+            }
+        }
+        return title;
+    }
 }
+

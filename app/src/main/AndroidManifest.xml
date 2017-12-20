@@ -58,7 +58,6 @@
             android:name=".MemoActivity"
             android:label="MemoActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
     </application>
 

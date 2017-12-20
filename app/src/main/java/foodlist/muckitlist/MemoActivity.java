@@ -23,7 +23,8 @@ import java.util.Date;
 public class MemoActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
-    private EditText etContent;
+    private EditText etMemo, etTitle, etAddress;
+
     private FirebaseDatabase mFirebaseDatabase;
 
 
@@ -37,7 +38,9 @@ public class MemoActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance(); //이미 Auth쪽에서 생성되었기 때문에 인증정보 유지 됨
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        etContent = (EditText) findViewById(R.id.Edtxt_memo);
+        etMemo = (EditText) findViewById(R.id.Edtxt_memo);
+        etTitle = (EditText) findViewById(R.id.Edtxt_title);
+        etAddress = (EditText) findViewById(R.id.Edtxt_address);
 
         /*if (mFirebaseUser == null) {  //인증정보가 제대로 전달 안되면 창을 닫고 다시 AuthActivity를 보여줌
             startActivity(new Intent(MainActivity.this, AuthActivity.class));
@@ -57,30 +60,27 @@ public class MemoActivity extends AppCompatActivity {
 
         });
 
-        /*buttonSaveMemo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initMemo();
-            }
-
-        });
-*/
     }
 
-
-
     private void initMemo() {
-        etContent.setText("");
+        etTitle.setText("");
+        etAddress.setText("");
+        etMemo.setText("");
     }
 
     private void saveMemo() {
-        String text = etContent.getText().toString();
-        if (text.isEmpty()) {
+        String title = etTitle.getText().toString();
+        String address = etAddress.getText().toString();
+        String text = etMemo.getText().toString();
+        if (text.isEmpty()||title.isEmpty()||address.isEmpty()) {
             return;
         }
         Memo memo = new Memo();
-        memo.setTxt(etContent.getText().toString());
-        memo.setCreateDate(new Date());
+        memo.setTitle(etTitle.getText().toString());
+        memo.setAddress(etAddress.getText().toString());
+        memo.setTxt(etMemo.getText().toString());
+        memo.setCreateDate(new Date().getTime());
+
         mFirebaseDatabase
                 .getReference("memos/" + mFirebaseUser.getUid())
                 .push()
@@ -88,8 +88,8 @@ public class MemoActivity extends AppCompatActivity {
                 .addOnSuccessListener(MemoActivity.this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Snackbar.make(etContent, "메모가 저장되었습니다.", Snackbar.LENGTH_LONG).show();
-                        initMemo();
+                        Snackbar.make(etMemo, "메모가 저장되었습니다.", Snackbar.LENGTH_LONG).show();
+                        finish();
                     }
                 });
     }
