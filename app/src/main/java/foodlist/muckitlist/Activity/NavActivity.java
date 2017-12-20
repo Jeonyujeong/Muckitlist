@@ -1,5 +1,6 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Activity;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +13,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import foodlist.muckitlist.Fragment.FriendFragment;
+import foodlist.muckitlist.Fragment.MapFragment;
+import foodlist.muckitlist.Fragment.MenuFragment;
+import foodlist.muckitlist.R;
+import foodlist.muckitlist.SearchActivity;
 
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +31,9 @@ public class NavActivity extends AppCompatActivity
     private TextView nameTextView;
     private TextView emailTextView;
     private FirebaseAuth auth;
+    private EditText searchEditText;
+    Fragment mapFragment ;
+    FragmentManager manager = getFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +42,6 @@ public class NavActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         auth = FirebaseAuth.getInstance();
         setSupportActionBar(toolbar);
-
-
 
 
 
@@ -52,10 +61,10 @@ public class NavActivity extends AppCompatActivity
         nameTextView.setText(auth.getCurrentUser().getDisplayName());
         emailTextView.setText(auth.getCurrentUser().getEmail());
 
+        mapFragment = new MapFragment();
+        manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
 
-
-        FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().add(R.id.content_main, new MapFragment()).commit();
+        searchEditText= (EditText) findViewById(R.id.search_text);
     }
 
 
@@ -73,7 +82,7 @@ public class NavActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.nav, menu);
         return true;
     }
 
@@ -85,10 +94,23 @@ public class NavActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        if (id == R.id.search) {
+            String search = searchEditText.getText().toString();
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("search", search);
+            startActivity(intent);
         }
 
+
+/**
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "setting", Toast.LENGTH_LONG).show();
+
+            startActivity(intent);
+            return true;
+        }
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -101,14 +123,14 @@ public class NavActivity extends AppCompatActivity
         FragmentManager manager = getFragmentManager();
 
         if (id == R.id.nav_map) {
-            manager.beginTransaction().replace(R.id.content_main, new MapFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new MapFragment()).commit();
             Toast.makeText(this, "map", Toast.LENGTH_SHORT).show();
             // Handle the camera action
         } else if (id == R.id.nav_menu) {
-            manager.beginTransaction().replace(R.id.content_main, new MenuFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new MenuFragment()).commit();
             Toast.makeText(getApplicationContext(), "menu", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_friend) {
-            manager.beginTransaction().replace(R.id.content_main, new FriendFragment()).commit();
+            manager.beginTransaction().replace(R.id.content_nav, new FriendFragment()).commit();
             Toast.makeText(getApplicationContext(), "friend", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_logout) {
             auth.signOut();
@@ -122,4 +144,21 @@ public class NavActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Double title_lat = intent.getDoubleExtra("lat", -1);
+        Double title_lng = intent.getDoubleExtra("lng", -1);
+
+        Toast.makeText(this, title_lat+", "+ title_lng, Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = new Bundle();
+        bundle.putDouble("lat", title_lat);
+        bundle.putDouble("lng", title_lng);
+        mapFragment = new MapFragment();
+        mapFragment.setArguments(bundle);
+
+        manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
+
+    }
 }

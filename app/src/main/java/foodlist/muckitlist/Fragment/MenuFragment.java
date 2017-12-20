@@ -1,4 +1,4 @@
-package foodlist.muckitlist;
+package foodlist.muckitlist.Fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+
+import foodlist.muckitlist.R;
 
 /**
  * Created by yujeong on 28/11/17.
