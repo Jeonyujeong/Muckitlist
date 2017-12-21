@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +47,11 @@ public class MenuFragment extends Fragment {
     private ArrayList<ListViewItem> arrayList = new ArrayList<ListViewItem>();
     private ListViewAdapter adapter;
     private Spinner spmenu, spmap, sppin;
-    String[] menuItems = {"메뉴전체","한식", "중식", "일식", "양식", "분식", "야식", "디저트", "술", "기타"};
-    String[] mapItems = {"지역전체","강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"};
-    String[] pinItems = {"핀전체","노란핀","빨간핀"};
+    String[] menuItems = {"메뉴전체", "한식", "중식", "일식", "양식", "분식", "야식", "디저트", "술", "기타"};
+    String[] mapItems = {"지역전체", "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"};
+    String[] pinItems = {"핀전체", "노란핀", "빨간핀"};
     private int menuNum, mapNum, pinNum;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -72,14 +74,15 @@ public class MenuFragment extends Fragment {
                 Intent memoIntent = new Intent(getActivity(), MemoActivity.class);
                 startActivity(memoIntent);
 
+
             }
         });
 
 
-        ListView memoListview ;
+        ListView memoListview;
 
         // Adapter 생성
-        adapter = new ListViewAdapter() ;
+        adapter = new ListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
         memoListview = (ListView) v.findViewById(R.id.memoListView);
@@ -89,10 +92,6 @@ public class MenuFragment extends Fragment {
 
 
 
-        /*ListView memoListView = (ListView) v.findViewById(R.id.memoListView);  //리스트뷰 받아 오기
-
-        adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, arrayList);
-*/
 
         ArrayAdapter menuAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, menuItems);
         ArrayAdapter<String> mapAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mapItems);
@@ -108,9 +107,10 @@ public class MenuFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 menuNum = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                menuNum=0;
+                menuNum = 0;
             }
         });
         spmap.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,9 +118,10 @@ public class MenuFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 mapNum = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                mapNum=0;
+                mapNum = 0;
             }
         });
         sppin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,23 +129,25 @@ public class MenuFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 pinNum = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                pinNum=0;
+                pinNum = 0;
             }
         });
 
 
-
         memoListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
                 Toast.makeText(
                         getActivity(),
-                        i + "is selected",
+                        position + "is selected",
                         Toast.LENGTH_SHORT
                 ).show();
                 Intent intent = new Intent(getActivity(), MemoViewActivity.class);
+                intent.putExtra("memo", adapter.getItem(position).getDesc());
+                Log.d("ㅇㅇㅇ","성공"+adapter.getItem(position).getDesc());
                 //intent.putExtra("MemoData",memo);
                 startActivity(intent);
             }
@@ -152,26 +155,27 @@ public class MenuFragment extends Fragment {
 
         return v;
     }
-    private void printMenu(){
+
+    private void printMenu() {
         mFirebaseDatabase.getReference("memos/" + mFirebaseUser.getUid()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Memo memo = dataSnapshot.getValue(Memo.class);
-                if(memo.isPin()){
+                if (memo.isPin()) {
                     adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.yes_pin),
-                            memo.getTitle(), memo.getKey());
-                } else{
+                            memo.getTitle(), memo.getCreateDate());
+                } else {
                     adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.no_pin),
-                            memo.getTitle(), memo.getKey());
+                            memo.getTitle(), memo.getCreateDate());
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //Memo memo = dataSnapshot.getValue(Memo.class);
-                //memo.setKey(dataSnapshot.getKey());
-
+                Memo memo = dataSnapshot.getValue(Memo.class);
+                memo.setKey(dataSnapshot.getKey());
+                adapter.notifyDataSetChanged();
             }
 
 
@@ -193,35 +197,42 @@ public class MenuFragment extends Fragment {
     }
 
 }
+
 class ListViewItem {
-    private Drawable iconDrawable ;
-    private String titleStr ;
-    private String descStr ;
+    private Drawable iconDrawable;
+    private String titleStr;
+    private long descStr;
 
     public void setIcon(Drawable icon) {
-        iconDrawable = icon ;
-    }
-    public void setTitle(String title) {
-        titleStr = title ;
-    }
-    public void setDesc(String desc) {
-        descStr = desc ;
+        iconDrawable = icon;
     }
 
+    public void setTitle(String title) {
+        titleStr = title;
+    }
+
+    public void setDesc(long desc) {
+        descStr = desc;
+    }
+
+
     public Drawable getIcon() {
-        return this.iconDrawable ;
+        return this.iconDrawable;
     }
+
     public String getTitle() {
-        return this.titleStr ;
+        return this.titleStr;
     }
-    public String getDesc() {
-        return this.descStr ;
+
+    public long getDesc() {
+        return this.descStr;
     }
+
 }
 
 class ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
+    private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
 
     // ListViewAdapter의 생성자
     public ListViewAdapter() {
@@ -231,7 +242,7 @@ class ListViewAdapter extends BaseAdapter {
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return listViewItemList.size() ;
+        return listViewItemList.size();
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
@@ -247,9 +258,9 @@ class ListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.list_image) ;
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.list_title) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.list_key) ;
+        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.list_image);
+        TextView titleTextView = (TextView) convertView.findViewById(R.id.list_title);
+        TextView descTextView = (TextView) convertView.findViewById(R.id.list_key);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewItem listViewItem = listViewItemList.get(position);
@@ -257,7 +268,7 @@ class ListViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setImageDrawable(listViewItem.getIcon());
         titleTextView.setText(listViewItem.getTitle());
-        descTextView.setText(listViewItem.getDesc());
+        descTextView.setText("");
 
         return convertView;
     }
@@ -265,17 +276,17 @@ class ListViewAdapter extends BaseAdapter {
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
-        return position ;
+        return position;
     }
 
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
-    public Object getItem(int position) {
-        return listViewItemList.get(position) ;
+    public ListViewItem getItem(int position) {
+        return listViewItemList.get(position);
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable icon, String title, String desc) {
+    public void addItem(Drawable icon, String title, long desc) {
         ListViewItem item = new ListViewItem();
 
         item.setIcon(icon);

@@ -8,135 +8,135 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="fill_parent"
         android:layout_width="fill_parent" >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="43dp"
-        android:paddingRight="5px" >
-
-        <EditText
-            android:id="@+id/Edtxt_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="start"
-            android:hint="제목을 입력해주세요."
-            android:inputType="textMultiLine"
-            android:selectAllOnFocus="false"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:layout_margin="5dp"/>
-
-        <EditText
-            android:id="@+id/Edtxt_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:gravity="start"
-            android:hint="주소를 입력해주세요."
-            android:inputType="textMultiLine"
-            android:textAlignment="center"
-            android:textSize="15sp"
-            android:layout_margin="7dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true"
-            android:background="#999999"
-            android:layout_margin="7dp"/>
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/buttonLoadPic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:layout_below="@+id/imageView"
-            android:onClick="loadImagefromGallery"
-            android:text="Load Picture"/>
-
-
-        <EditText
-            android:id="@+id/Edtxt_memo"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#EFEFEF"
-            android:gravity="start"
-            android:hint="\n           메모를 입력하세요."
-            android:inputType="textMultiLine"
-            android:layout_margin="7dp"/>
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="43dp"
+            android:paddingRight="5px" >
 
-            <TextView
-                android:id="@+id/food_category"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/Edtxt_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="종류"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="제목을 입력해주세요."
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="false"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:layout_margin="5dp"/>
+
+            <EditText
+                android:id="@+id/Edtxt_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="주소를 입력해주세요."
+                android:inputType="textMultiLine"
+                android:textAlignment="center"
+                android:textSize="15sp"
                 android:layout_margin="7dp"/>
 
-            <Spinner
-                android:id="@+id/spinner"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_centerInParent="true"
+                android:background="#999999"
+                android:layout_margin="7dp"/>
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/buttonLoadPic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:layout_below="@+id/imageView"
+                android:onClick="loadImagefromGallery"
+                android:text="Load Picture"/>
+
+
+            <EditText
+                android:id="@+id/Edtxt_memo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#EFEFEF"
+                android:gravity="start"
+                android:hint="\n           메모를 입력하세요."
+                android:inputType="textMultiLine"
+                android:layout_margin="7dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/food_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="종류"
+                    android:layout_margin="7dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="7dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_margin="7dp"
+                    android:layout_weight="1"
+                    android:text="평점"/>
+
+                <RatingBar
+                    android:id="@+id/ratingBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="false"
+                    android:max="6"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:stepSize="0.5"
+                    android:layout_margin="7dp"/>
+
+
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/muckBan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="7dp"/>
+                app:srcCompat="@drawable/yes_eat"
+                tools:layout_editor_absoluteY="49dp"
+                android:onClick="onClickMuk"/>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_margin="7dp"
-                android:layout_weight="1"
-                android:text="평점"/>
-
-            <RatingBar
-                android:id="@+id/ratingBar1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="false"
-                android:max="6"
-                android:numStars="5"
-                android:rating="3"
-                android:stepSize="0.5"
-                android:layout_margin="7dp"/>
-
-
-        </LinearLayout>
-        <ImageButton
-            android:id="@+id/muckBan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/yes_eat"
-            tools:layout_editor_absoluteY="49dp"
-            android:onClick="onClickMuk"/>
-    </LinearLayout>
     </ScrollView>
 
     <ImageButton

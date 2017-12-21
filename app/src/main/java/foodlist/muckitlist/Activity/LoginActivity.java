@@ -72,7 +72,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         emailLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createUser(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+   //             Log.d("editText", editTextEmail.getText().toString()+"");
+                    createUser(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+
             }
         });
 
@@ -106,10 +108,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            loginUser(email, password);
-                        } else {
+                        if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                        } else {
+                            loginUser(email, password);
                         }
 
                         // ...
@@ -122,10 +124,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "이메일 로그인 완료", Toast.LENGTH_SHORT).show();
+                        } else  {
+                            Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
 
                         // ...

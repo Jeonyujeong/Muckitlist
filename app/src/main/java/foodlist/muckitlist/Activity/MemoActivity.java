@@ -21,6 +21,9 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
@@ -41,12 +44,13 @@ public class MemoActivity extends AppCompatActivity {
     private RatingBar rb;
     private float floatRating;
     String[] items = {"한식", "중식", "일식", "양식", "분식", "야식", "디저트", "술", "기타"};
-    private int foodnum;
+    private int menuNum;
     private static int PICK_IMAGE_REQUEST = 1;
     private ImageView imgView;
     private ImageButton btnMuk;
     private boolean pin;
-
+    private long crDay;
+    private Memo memo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,8 @@ public class MemoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        memo = new Memo();
         mAuth = FirebaseAuth.getInstance(); //이미 Auth쪽에서 생성되었기 때문에 인증정보 유지 됨
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -64,6 +70,8 @@ public class MemoActivity extends AppCompatActivity {
         rb = (RatingBar) findViewById(R.id.ratingBar1);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
 
+        Intent gintent = getIntent();
+
         ArrayAdapter<String> foodAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
         foodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // 어댑터 설정
@@ -72,16 +80,25 @@ public class MemoActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                foodnum = position;
+                menuNum = position;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                foodnum = 8;
+                menuNum = 8;
             }
             // 아이템이 선택되었을 때 호출됨
 
         });
+        String receiver;
+        if (gintent.hasExtra("memo")) {
+            crDay = gintent.getExtras().getLong("memo");
+            Log.d("ㅇㅇㅇ", "수정하러가기 후 성공" + crDay);
+            displayMemo();
+            Log.d("ㅇㅇㅇ", "출력왜안돼?" + crDay);
+        }
+
+
         // 별점주기
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -93,9 +110,9 @@ public class MemoActivity extends AppCompatActivity {
 
         //먹킷바꾸기
         btnMuk = (ImageButton) findViewById(R.id.muckBan);
-        if(pin){
+        if (pin) {
             btnMuk.setImageResource(R.drawable.yes_eat);
-        } else{
+        } else {
             btnMuk.setImageResource(R.drawable.no_eat);
         }
         btnMuk.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +123,7 @@ public class MemoActivity extends AppCompatActivity {
                     pin = false;
                 } else {
                     btnMuk.setImageResource(R.drawable.yes_eat);
-                  pin = true;
+                    pin = true;
                 }
             }
         });
@@ -123,14 +140,58 @@ public class MemoActivity extends AppCompatActivity {
 
         });
 
+
     }
 
+    private void displayMemo() {
+        mFirebaseDatabase.getReference("memos/" + mFirebaseUser.getUid())
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Memo memo = dataSnapshot.getValue(Memo.class);
+                        memo.setKey(dataSnapshot.getKey());
+                        Log.d("ㅇㅇㅇxds", memo.getKey());
+
+                        if (crDay == memo.getCreateDate()) {
+                            showMemo(memo);
+                        } else {
+                            // Toast.makeText(MemoViewActivity.this, "잘못 된 접근입니다.", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Memo memo = dataSnapshot.getValue(Memo.class);
+                        memo.setKey(dataSnapshot.getKey());
+
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+    }
 
     private void initMemo() {
         Intent intent = getIntent();
         String title = "";
         String address = "";
-        if(intent != null) {
+        if (intent != null) {
             title = intent.getStringExtra("title");
             address = intent.getStringExtra("address");
         }
@@ -147,7 +208,6 @@ public class MemoActivity extends AppCompatActivity {
             Toast.makeText(this, "상호명을 적어주세요", Toast.LENGTH_LONG).show();
             return;
         }
-        Memo memo = new Memo();
 
         Log.d("titletest", title + "저장전");
         memo.setTitle(title);
@@ -155,12 +215,12 @@ public class MemoActivity extends AppCompatActivity {
         memo.setTxt(text);
         memo.setCreateDate(new Date().getTime());
         memo.setRating(floatRating);
-        memo.setFood_category(foodnum);
+        memo.setFood_category(menuNum);
         memo.setUsid(mFirebaseUser.getUid());
         memo.setPin(pin);
 
         mFirebaseDatabase
-                .getReference("memos/"+mFirebaseUser.getUid())
+                .getReference("memos/" + mFirebaseUser.getUid())
                 .push()
                 .setValue(memo)
                 .addOnSuccessListener(MemoActivity.this, new OnSuccessListener<Void>() {
@@ -203,6 +263,27 @@ public class MemoActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Oops! 로딩에 오류가 있습니다.", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+        }
+
+    }
+
+
+    void showMemo(Memo memo) {
+        etTitle.setText(memo.getTitle());
+        etAddress.setText(memo.getAddress());
+        etMemo.setText(memo.getTxt());
+
+        pin = memo.isPin();
+        btnMuk = (ImageButton) findViewById(R.id.muckBan);
+        if (pin) {
+            btnMuk.setImageResource(R.drawable.yes_eat);
+        } else {
+            btnMuk.setImageResource(R.drawable.no_eat);
+        }
+        rb.setRating(memo.getRating());
+        menuNum = memo.getFood_category();
+        switch (memo.getFood_category()) {
+
         }
 
     }

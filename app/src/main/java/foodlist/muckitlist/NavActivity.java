@@ -16,9 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,7 +29,8 @@ public class NavActivity extends AppCompatActivity
 
     private TextView nameTextView;
     private TextView emailTextView;
-    private ImageButton settingButton;
+    private String name;
+    private String email;
     private FirebaseAuth auth;
     private EditText searchEditText;
     Fragment mapFragment ;
@@ -63,16 +62,8 @@ public class NavActivity extends AppCompatActivity
         nameTextView.setText(auth.getCurrentUser().getDisplayName());
         emailTextView.setText(auth.getCurrentUser().getEmail());
 
-        settingButton = (ImageButton)view.findViewById(R.id.setting);
-        settingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("onClick", "ok");
-
-            //    Intent intent = new Intent();
-            //    startActivity(intent);
-            }
-        });
+        name = auth.getCurrentUser().getDisplayName();
+        email= auth.getCurrentUser().getEmail();
 
         mapFragment = new MapFragment();
         manager.beginTransaction().add(R.id.content_nav, mapFragment).commit();
@@ -113,8 +104,6 @@ public class NavActivity extends AppCompatActivity
             Intent intent = new Intent(this, SearchActivity.class);
             intent.putExtra("search", search);
             startActivity(intent);
-        } else if(id == R.id.setting) {
-            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
         }
 
     return super.onOptionsItemSelected(item);
@@ -132,26 +121,25 @@ public class NavActivity extends AppCompatActivity
             manager.replace(R.id.content_nav, new MapFragment());
             manager.addToBackStack(null);
             manager.commit();
-            Toast.makeText(this, "map", Toast.LENGTH_SHORT).show();
             // Handle the camera action
         } else if (id == R.id.nav_menu) {
             manager.replace(R.id.content_nav, new MenuFragment());
             manager.addToBackStack(null);
             manager.commit();
-            Toast.makeText(getApplicationContext(), "menu", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_friend) {
             manager.replace(R.id.content_nav, new FriendFragment());
             manager.addToBackStack(null);
             manager.commit();
-            Toast.makeText(getApplicationContext(), "friend", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_logout) {
             auth.signOut();
             finish();
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
-        } else if(id == R.id.setting) {
-            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
-
+        } else if(id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("address", email);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,9 +155,7 @@ public class NavActivity extends AppCompatActivity
         Double title_lng = intent.getDoubleExtra("lng", -1);
         String title = intent.getStringExtra("title");
         String address = intent.getStringExtra("address");
-    //    FoodItem item = (FoodItem) intent.getSerializableExtra("item");
-
-        Toast.makeText(this, title_lat+", "+ title_lng, Toast.LENGTH_SHORT).show();
+        //       Toast.makeText(this, title_lat+", "+ title_lng, Toast.LENGTH_SHORT).show();
 
 //        manager.findFragmentById(R.id.content_nav);
         Bundle bundle = new Bundle();
@@ -177,7 +163,6 @@ public class NavActivity extends AppCompatActivity
         bundle.putDouble("lng", title_lng);
         bundle.putString("title", title);
         bundle.putString("address", address);
-    //    bundle.putSerializable("item", (Serializable) item);
         mapFragment = new MapFragment();
         mapFragment.setArguments(bundle);
         manager.beginTransaction().replace(R.id.content_nav, mapFragment).commit();

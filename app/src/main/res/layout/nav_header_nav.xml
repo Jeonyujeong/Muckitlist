@@ -48,25 +48,6 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textSize="20dp" />
 
-                <ImageButton
-                    android:id="@+id/mail"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_mail" />
-
-                <ImageButton
-                    android:id="@+id/setting"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_setting" />
-
             </LinearLayout>
 
             <TextView
