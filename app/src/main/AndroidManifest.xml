@@ -63,11 +63,13 @@
             android:name=".Activity.MemoActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme">
-
         </activity>
         <activity android:name=".SearchActivity">
 
         </activity>
+
+        <activity android:name=".Activity.MemoViewActivity"/>
+
     </application>
 
 </manifest>

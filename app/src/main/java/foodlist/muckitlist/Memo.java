@@ -11,8 +11,22 @@ public class Memo {
 
     private String key;
     private String txt, title, address;
+    private int food_category;
     private long createDate, updateDate;
-    private int star;
+    private float rating;
+    private String usid;
+
+    public void setUsid(String usid) {
+        this.usid = usid;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setFood_category(int food_category) {
+        this.food_category = food_category;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -38,16 +52,8 @@ public class Memo {
         this.address = address;
     }
 
-    public void setStar(int star) {
-        this.star = star;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public int getStar() {
-        return star;
     }
 
     public String getTxt() {
@@ -66,7 +72,19 @@ public class Memo {
         return updateDate;
     }
 
-    //캡슐화
+    public float getRating() {
+
+        return rating;
+    }
+
+    public String getUsid() {
+        return usid;
+    }
+
+    public int getFood_category() {
+        return food_category;
+    }
+//캡슐화
 
 
 

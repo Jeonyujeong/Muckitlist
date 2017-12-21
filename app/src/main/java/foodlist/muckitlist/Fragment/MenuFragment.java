@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 import foodlist.muckitlist.Activity.MemoActivity;
+import foodlist.muckitlist.Activity.MemoViewActivity;
 import foodlist.muckitlist.Memo;
 import foodlist.muckitlist.R;
 
@@ -37,7 +39,11 @@ public class MenuFragment extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private ArrayList<String> arrayList = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
-
+    private Spinner spmenu, spmap, sppin;
+    String[] menuItems = {"메뉴전체","한식", "중식", "일식", "양식", "분식", "야식", "디저트", "술", "기타"};
+    String[] mapItems = {"지역전체","강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"};
+    String[] pinItems = {"핀전체","노란핀","빨간핀"};
+    private int menuNum, mapNum, pinNum;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -48,7 +54,9 @@ public class MenuFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance(); //이미 Auth쪽에서 생성되었기 때문에 인증정보 유지 됨
         mFirebaseUser = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
+        spmenu = (Spinner) v.findViewById(R.id.spmenu_menu);
+        spmap = (Spinner) v.findViewById(R.id.spmenu_map);
+        sppin = (Spinner) v.findViewById(R.id.spmenu_pin);
 
         FloatingActionButton fabNewMemo = (FloatingActionButton) v.findViewById(R.id.new_memo);
 
@@ -57,6 +65,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent memoIntent = new Intent(getActivity(), MemoActivity.class);
                 startActivity(memoIntent);
+
             }
         });
 
@@ -65,21 +74,69 @@ public class MenuFragment extends Fragment {
 
         adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, arrayList);
 
+        printMenu();
         memoListView.setAdapter(adapter);
+
+
+        ArrayAdapter menuAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, menuItems);
+        ArrayAdapter<String> mapAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mapItems);
+        ArrayAdapter<String> pinAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, pinItems);
+        menuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mapAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spmenu.setAdapter(menuAdapter);
+        spmap.setAdapter(mapAdapter);
+        sppin.setAdapter(pinAdapter);
+        spmenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                menuNum = position;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                menuNum=0;
+            }
+        });
+        spmap.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                mapNum = position;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mapNum=0;
+            }
+        });
+        sppin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                pinNum = position;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                pinNum=0;
+            }
+        });
+
+
 
         memoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(
                         getActivity(),
-                        i+"is selected",
+                        i + "is selected",
                         Toast.LENGTH_SHORT
                 ).show();
-
-
+                Intent intent = new Intent(getActivity(), MemoViewActivity.class);
+                //intent.putExtra("MemoData",memo);
+                startActivity(intent);
             }
         });
 
+        return v;
+    }
+    private void printMenu(){
         mFirebaseDatabase.getReference("memos/" + mFirebaseUser.getUid()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -90,16 +147,9 @@ public class MenuFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Memo memo = dataSnapshot.getValue(Memo.class);
-                memo.setKey(dataSnapshot.getKey());
+                //Memo memo = dataSnapshot.getValue(Memo.class);
+                //memo.setKey(dataSnapshot.getKey());
 
-                /**for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-                 MenuItem menuItem = mNavigationView.getMenu().getItem(i);
-                 if (memo.getKey().equals(((Memo) menuItem.getActionView().getTag()).getKey())) {
-                 menuItem.getActionView().setTag(memo);
-                 menuItem.setTitle(memo.getTitle());
-                 //memo.setTxt(memo.getTxt());
-                 break;**/
             }
 
 
@@ -118,6 +168,5 @@ public class MenuFragment extends Fragment {
 
             }
         });
-        return v;
     }
 }
