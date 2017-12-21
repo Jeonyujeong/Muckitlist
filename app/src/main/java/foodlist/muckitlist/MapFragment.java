@@ -14,11 +14,12 @@
  *  limitations under the License.
  */
 
-package foodlist.muckitlist.Fragment;
+package foodlist.muckitlist;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -40,9 +41,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import foodlist.muckitlist.R;
+import foodlist.muckitlist.Activity.MemoActivity;
 
 
 /**
@@ -52,9 +54,12 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
 
     private static final String TAG = " googlmap";
     private MapView mapView = null;
+    private GoogleMap gmap;
     LocationManager locationManager;
     Double latitude = 37.56;
     Double longitude = 126.97;
+    String title;
+    String address;
     public final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
     public final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1;
 
@@ -175,16 +180,6 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
             latitude = location.getLatitude();
             longitude = location.getLongitude();
 
-            Bundle bundle = getArguments();
-            if (bundle != null) {
-
-                Double lat = bundle.getDouble("lat");
-                //getArguments().getDouble("lat");
-                Double lng = bundle.getDouble("lng");
-                LatLng title = new LatLng(lat, lng);
-                Toast.makeText(getActivity(), title.latitude + ", " + title.longitude, Toast.LENGTH_SHORT).show();
-            }
-
             stopLocationService();
 
         }
@@ -239,8 +234,9 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
         Bundle bundle = getArguments();
         if (bundle != null) {
             latitude = bundle.getDouble("lat");
-            //getArguments().getDouble("lat");
             longitude = bundle.getDouble("lng");
+            title = bundle.getString("title");
+            address = bundle.getString("address");
             Log.d(TAG, latitude + "" + longitude);
             Toast.makeText(this.getActivity(), "bundle", Toast.LENGTH_SHORT).show();
 
@@ -271,15 +267,59 @@ public class MapFragment extends android.app.Fragment implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady");
-        LatLng SEOUL = new LatLng(latitude, longitude);
+        gmap = googleMap;
+/*        LatLng SEOUL = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SEOUL);
-        markerOptions.title("현재위치");
-        markerOptions.snippet("seoul");
-        googleMap.addMarker(markerOptions);
+        markerOptions.title(title);
+        markerOptions.snippet(address);*/
+
+     //   googleMap.setOnMarkerClickListener(this);
+
+        onAddMarker();
+
+        gmap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+/*        googleMap.addMarker(markerOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+  */  }
+
+    //마커 , 원추가
+    public void onAddMarker(){
+        LatLng position = new LatLng(latitude , longitude);
+
+        //나의위치 마커
+        MarkerOptions markerOptions = new MarkerOptions()
+  //              .icon(BitmapDescriptorFactory.defaultMarker(200f))  //마커색상지정
+                .title(title)
+                .snippet(address)
+                .position(position);   //마커위치
+
+        //마커추가
+        this.gmap.addMarker(markerOptions);
+        gmap.addMarker(markerOptions);
+        gmap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        gmap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+
+        //정보창 클릭 리스너
+        gmap.setOnInfoWindowClickListener(infoWindowClickListener);
     }
+
+
+    //정보창 클릭 리스너
+    GoogleMap.OnInfoWindowClickListener infoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            String markerId = marker.getId();
+     //       Toast.makeText(this, "정보창 클릭 Marker ID : "+markerId, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), MemoActivity.class);
+            intent.putExtra("title", title);
+            intent.putExtra("address", address);
+            startActivity(intent);
+        }
+    };
 
 
 }

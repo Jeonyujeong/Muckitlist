@@ -111,7 +111,7 @@ public class MemoActivity extends AppCompatActivity {
             }
         });
 
-
+        initMemo();
 
         //메모저장
         ImageButton buttonSaveMemo = (ImageButton) findViewById(R.id.save_memo);
@@ -123,13 +123,19 @@ public class MemoActivity extends AppCompatActivity {
 
         });
 
-
     }
 
 
     private void initMemo() {
-        etTitle.setText("");
-        etAddress.setText("");
+        Intent intent = getIntent();
+        String title = "";
+        String address = "";
+        if(intent != null) {
+            title = intent.getStringExtra("title");
+            address = intent.getStringExtra("address");
+        }
+        etTitle.setText(title);
+        etAddress.setText(address);
         etMemo.setText("");
     }
 
