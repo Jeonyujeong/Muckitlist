@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:paddingRight="5px"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:gravity="start"
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="false"
+                android:singleLine="true"
+                android:text="제목"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:background="@null"
+                android:gravity="start"
+                android:inputType="textMultiLine"
+                android:text="no address"
+                android:textAlignment="center"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="7dp"
+                android:background="#999999" />
+
+
+            <ImageView
+                android:id="@+id/v_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+            <TextView
+                android:id="@+id/tv_memo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="7dp"
+                android:background="#EFEFEF"
+                android:gravity="start"
+                android:inputType="textMultiLine"
+                android:text="no memo" />
+
+
+            <TextView
+                android:id="@+id/v_food_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:layout_weight="1"
+                android:text="종류"
+                android:textAlignment="center"
+                android:textSize="25dp" />
+
+
+            <RatingBar
+                android:id="@+id/ratingBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="7dp"
+                android:gravity="center"
+                android:isIndicator="true"
+                android:max="6"
+                android:numStars="5"
+                android:rating="3"
+                android:stepSize="0.5" />
+
+
+            <ImageButton
+                android:id="@+id/muckBan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClickMuk"
+                app:srcCompat="@drawable/yes_eat" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

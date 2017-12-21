@@ -17,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -64,17 +65,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        editTextEmail = (EditText)findViewById(R.id.edittext_email);
-        editTextPassword = (EditText)findViewById(R.id.edittext_password);
+        editTextEmail = (EditText) findViewById(R.id.edittext_email);
+        editTextPassword = (EditText) findViewById(R.id.edittext_password);
 
-        Button emailLogin = (Button)findViewById(R.id.email_login_button);
+        Button emailLogin = (Button) findViewById(R.id.email_login_button);
         emailLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createUser(editTextEmail.getText().toString(), editTextPassword.getText().toString());
             }
         });
-
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
-    private void loginUser(String email, String password){
+    private void loginUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -140,11 +140,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount account = result.getSignInAccount();
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
+                Toast.makeText(this, "인증에 실패하였습니다.", Toast.LENGTH_LONG).show();
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+       /* mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -167,7 +168,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                         // ...
                     }
-                });
+                });*/
+        Task<AuthResult> authResultTask
+                = mAuth.signInWithCredential(credential);
+
+        authResultTask.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+            }
+        });
+
     }
 
 
