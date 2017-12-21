@@ -1,7 +1,10 @@
 package foodlist.muckitlist.Activity;
 
+import android.media.Rating;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,10 +22,14 @@ import foodlist.muckitlist.R;
  */
 
 public class MemoViewActivity extends AppCompatActivity {
-    private TextView title, address, memo;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseUser mFirebaseUser;
     private FirebaseAuth mFirebaseAuth;
+    private TextView title, address, memo, menu;
+    private Rating star;
+    private ImageButton btnMuk;
+    private boolean pin;
+    private ImageView imgView;
 
 
     @Override
@@ -34,9 +41,9 @@ public class MemoViewActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
 
-        title = (TextView) findViewById(R.id.Title);
-        address = (TextView) findViewById(R.id.Address);
-        memo = (TextView) findViewById(R.id.Memo);
+        title = (TextView) findViewById(R.id.tv_title);
+        address = (TextView) findViewById(R.id.tv_address);
+        memo = (TextView) findViewById(R.id.tv_memo);
 
         displayMemo();
     }

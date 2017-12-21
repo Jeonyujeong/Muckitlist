@@ -15,6 +15,11 @@ public class Memo {
     private long createDate, updateDate;
     private float rating;
     private String usid;
+    private boolean pin;
+
+    public void setPin(boolean pin) {
+        this.pin = pin;
+    }
 
     public void setUsid(String usid) {
         this.usid = usid;
@@ -79,6 +84,10 @@ public class Memo {
 
     public String getUsid() {
         return usid;
+    }
+
+    public boolean isPin() {
+        return pin;
     }
 
     public int getFood_category() {

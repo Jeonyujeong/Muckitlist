@@ -45,7 +45,7 @@ public class MemoActivity extends AppCompatActivity {
     private static int PICK_IMAGE_REQUEST = 1;
     private ImageView imgView;
     private ImageButton btnMuk;
-    private boolean pin=false;
+    private boolean pin;
 
 
     @Override
@@ -137,8 +137,8 @@ public class MemoActivity extends AppCompatActivity {
         String title = etTitle.getText().toString();
         String address = etAddress.getText().toString();
         String text = etMemo.getText().toString();
-        if (text.isEmpty() || title.isEmpty() || address.isEmpty()) {
-            Toast.makeText(this, "메모를 전부 채워 주세요", Toast.LENGTH_LONG).show();
+        if (title.isEmpty()) {
+            Toast.makeText(this, "상호명을 적어주세요", Toast.LENGTH_LONG).show();
             return;
         }
         Memo memo = new Memo();
@@ -150,10 +150,11 @@ public class MemoActivity extends AppCompatActivity {
         memo.setCreateDate(new Date().getTime());
         memo.setRating(floatRating);
         memo.setFood_category(foodnum);
-        memo.setUsid(mFirebaseUser.getUid().substring(0, 8));
+        memo.setUsid(mFirebaseUser.getUid());
+        memo.setPin(pin);
 
         mFirebaseDatabase
-                .getReference("memos/")
+                .getReference("memos/"+mFirebaseUser.getUid())
                 .push()
                 .setValue(memo)
                 .addOnSuccessListener(MemoActivity.this, new OnSuccessListener<Void>() {
