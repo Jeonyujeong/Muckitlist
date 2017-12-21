@@ -1,5 +1,6 @@
 package foodlist.muckitlist;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,8 +17,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import foodlist.muckitlist.Activity.NavActivity;
-
 public class SearchActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
@@ -26,6 +25,7 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<FoodItem> itemList;
     CustomAdapter adapter;
 
+    FragmentManager manager = getFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +54,11 @@ public class SearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(SearchActivity.this, NavActivity.class);
                 intent.putExtra("lat", oLatLng.getX());
                 intent.putExtra("lng", oLatLng.getY());
+                intent.putExtra("title", item.getName());
+                intent.putExtra("address", item.getAddress());
+        //        intent.putExtra("Item", (Serializable) item);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-
-
 
                 finish();
             }

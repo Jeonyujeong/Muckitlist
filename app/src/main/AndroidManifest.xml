@@ -54,7 +54,7 @@
 
         </activity>
         <activity
-            android:name=".Activity.NavActivity"
+            android:name=".NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme">
 
